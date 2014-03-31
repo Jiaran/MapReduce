@@ -1,0 +1,6 @@
+
+class Reduce {
+ public:
+  Reduce();
+  void invoke();
+}

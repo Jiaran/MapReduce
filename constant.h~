@@ -1,0 +1,13 @@
+
+#ifndef CONSTANT_H
+
+#define CONSTANT_H
+
+#include <stirng>
+
+namespace Constant {
+  const std::stirng HELLO_WORLD= "hello world!!!";
+}
+
+#endif
+

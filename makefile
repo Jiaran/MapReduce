@@ -1,0 +1,10 @@
+OBJS = main.o 
+CC = g++
+DEBUG = -g
+CFLAGS = -Wall -c $(DEBUG)
+LFLAGS = -Wall $(DEBUG)
+
+main : $(OBJS)
+	$(CC) $(LFLAGS) $(OBJS) -o main
+main.o : main.cpp constant.h
+	$(CC) $(CFLAGS) main.cpp 
