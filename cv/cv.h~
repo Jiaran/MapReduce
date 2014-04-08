@@ -12,7 +12,6 @@
 
 #define WIDE 400
 #define HEIGHT 400
-using namespace std;
 using namespace cv;
 void drawCircle(int mx, int my, int x, int y , Mat img);
 Point getCenter(int mx, int my, int x, int y);

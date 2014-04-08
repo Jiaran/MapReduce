@@ -67,7 +67,7 @@ Point getCenter(int mx, int my, int x, int y ){
 
 int circleDetect(Mat image1){
 	IplImage* img = new IplImage(image1);
-        IplImage* gray = cvCreateImage( cvGetSize(img), img->depth, 1);
+        IplImage* gray = cvCreateImage( cvGetSize(img), img->depth, img->nChannels );
         CvMemStorage* storage = cvCreateMemStorage(0);
         cvCvtColor( img, gray, CV_RGB2GRAY );
         cvSmooth( gray, gray, CV_GAUSSIAN, 9, 9 );
