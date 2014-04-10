@@ -2,6 +2,8 @@
 #define NODE_H
 
 #include "csapp.h"
+#include <unistd.h>
+
 
 class NodeInfo{
   public:
@@ -11,11 +13,17 @@ class NodeInfo{
   NodeInfo();
 };
 
+class TimerProcess{
+ public:
+  virtual void invoke()=0;
+};
+
 
 class Node{
 
  protected:
-  
+  TimerProcess * timerProcess;
+  void timerStart();
  public:
   NodeInfo myInfo;
   Node(const char* port, const char * ip);
@@ -23,7 +31,8 @@ class Node{
   virtual void processRequest(rio_t & , int)=0;
   void sendNodeInfo(int fd);
   NodeInfo readNodeInfo(rio_t & r);
-  int connectTo(NodeInfo & n);
+  static int connectTo(NodeInfo & n);
+  ~Node();
 };
 
 struct Arg {
@@ -34,6 +43,6 @@ struct Arg {
 } ;
 void * receiveRequest(void * );
 void * listenThread(void * );
-
+void * heartBeat(void *);
 
 #endif

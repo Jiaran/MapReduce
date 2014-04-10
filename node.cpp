@@ -12,6 +12,7 @@ Node:: Node(const char* port, const char * ip){
   
   strncpy(myInfo.port,port,10);
   strncpy(myInfo.IP, ip,20);
+  timerProcess =NULL;
 }
 
 void Node:: run(){
@@ -22,6 +23,7 @@ void Node:: run(){
   Pthread_create(&tid, NULL, listenThread, (void*)args);
   Pthread_detach(tid);
   
+    
 }
 
 void *  listenThread(void * a){
@@ -88,3 +90,27 @@ int Node:: connectTo(NodeInfo & n){
   int fd=Open_clientfd(n.IP, atoi(n.port));
   return fd;
 }
+
+void Node:: timerStart(){
+  pthread_t timerTid;
+  if(timerProcess !=NULL){
+    Pthread_create(&timerTid,NULL,heartBeat,(void*)timerProcess);
+    Pthread_detach(timerTid);
+  }
+}
+Node::~ Node(){
+  if(timerProcess!= NULL){
+    delete(timerProcess);
+  }
+}
+void * heartBeat(void * args){
+  TimerProcess *s = (TimerProcess *) args;
+  while(true){
+    sleep(3);
+    s->invoke();
+
+  }
+
+}
+
+

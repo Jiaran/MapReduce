@@ -1,32 +1,57 @@
 #include "worker.h"
 
-CWorker:: CWorker(const char * port,const char * ip):Node(port,ip){
+
+class Update : public TimerProcess{
+private:
+  int fdtoMaster;
+  int workerID;
+public:
+  Update(int fd , int id){
+    fdtoMaster = fd;
+    workerID=id;
+  }
+  virtual void invoke(){
+    char buf[20];
+    sprintf(buf,"UPDATE*%d\n",workerID);
+    Rio_writep(fdtoMaster, buf, strlen(buf)); 
+    
+  }
+
+};
+
+CWorker:: CWorker(const char * port,const char * ip,NodeInfo& master ):Node(port,ip){
+  this->master = master;
 }
 
 void CWorker:: run(){
   Node::run();
+  join();
   while(true){
     std::string s;
     std::cin>>s;
     if(s=="q"){
-      return;
+      break;
     }
   
   }
+  Close(masterfd);
 }
 
-void CWorker:: join(NodeInfo & n){
-  int fd = connectTo(n);
+void CWorker:: join(){
+  int fd = connectTo(master);
   char buf[MAXLINE];
   sprintf(buf,"%s","JOIN\n");
   Rio_writep(fd, buf, strlen(buf)); 
 
   sendNodeInfo(fd);
   
-  Rio_readp(fd, buf, MAXLINE);
+  int numBytes=Rio_readp(fd, buf, MAXLINE);
+  buf[numBytes]=0;
   workerID=atoi(buf);
-  int numBytes = Rio_readp(fd, buf, MAXLINE);
-  Close(fd);
+  printf("buf is ::::%s,,,workerID is %d\n",buf,workerID);
+  masterfd = fd;
+  timerProcess = new Update( masterfd,workerID);
+  timerStart();
 
 }
 
@@ -55,14 +80,40 @@ void CWorker:: processRequest(rio_t & client, int clientfd){
   else if(strcmp(cmd,"REDUCE")==0){
     
     cmd = strtok_r(NULL, " \r\n",&saveptr);
-    printf("REDUCE , job ID %s\n ",cmd);
+    printf("REDUCE , job ID %s\n",cmd);
+    int jobID = atoi(cmd);
     while(numBytes = Rio_readlineb(&client, buf, MAXLINE)>0){
-      printf("%s\n",buf);
+      printf("%s and the length is \n",buf);
 
     }
     //handle reduce work
     
+    //complete(jobID);
+    
+  }
+  else if(strcmp(cmd,"DONE")==0){
+    //clear Map and Reduce;
+    printf("done\n");
+  }
+  else if(strcmp(cmd,"MODIFY")==0){
+    //MODIFY JOBID\n IP*PORT
+    cmd = strtok_r(NULL, " \r\n",&saveptr);
+    int jobID =atoi(cmd);
+    NodeInfo n= readNodeInfo(client);
+    printf("MODIFY jobID is %d, ip %s, port %s\n",jobID, n.IP, n.port);
   }
   Close(clientfd);
   
 }
+
+
+void CWorker:: complete(int jobID){
+  int fd = connectTo(master);
+  char buf[MAXLINE];
+ 
+  sprintf(buf,"COMPLETE\n%d*%d\n",jobID,workerID);
+  Rio_writep(fd, buf, strlen(buf)); 
+  Close(fd);
+
+
+} 
