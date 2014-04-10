@@ -1,0 +1,56 @@
+#ifndef MAPIMAGE_H
+
+#define MAPIMAGE_H
+
+#include <string>
+#include <map>
+#include <iostream>
+#include "cv.h"
+using namespace std;
+using namespace cv;
+
+struct imageInfo{
+	string name;
+	Mat myPic;
+};
+
+class mapImage{
+private:
+	int fileStartID;
+	int fileEndID;
+	map<string,int> myMap;
+	
+public:
+	mapWorker(int start, int terminal){
+		fileStartID=start;
+		fileEndID=terminal;
+	}
+
+	imageInfo getImage(int fileID){
+		imageInfo result;
+		result.name="lena";
+		result.myPic=imread("lena.jpg");
+		return result;
+	}
+
+	map<string,int> getMap(){
+		for(int i=fileStartID;i<=fileEndID;i++){
+			imageInfo myImage=getImage(i);
+			if(circleDetect(myImage.myPic)==0) continue;
+			else{
+				myMap[myImage.name]=myMap[myImage.name]+1;
+			}
+		}
+		return myMap;
+	}
+
+	int getStartID(){
+		return fileStartID;
+	}
+
+	int getEndID(){
+		return fileEndID;
+	}
+};
+
+#endif

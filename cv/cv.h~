@@ -1,0 +1,23 @@
+#ifndef CV_H
+#define CV_H
+
+#include "opencv/cxcore.h"
+#include "opencv2/opencv.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include <math.h>
+
+#define WIDE 400
+#define HEIGHT 400
+using namespace cv;
+void drawCircle(int mx, int my, int x, int y , Mat img);
+Point getCenter(int mx, int my, int x, int y);
+void drawTriangle(int mx, int my, int x, int y, Mat img);
+void drawRandom(int mx, int my, int x, int y , Mat img);
+void drawSquare(int mx, int my, int x, int y , Mat img);
+int circleDetect(Mat image1);
+
+#endif
