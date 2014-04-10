@@ -1,5 +1,0 @@
-
-class Worker{
- public:
-  Worker();
-}
