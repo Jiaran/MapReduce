@@ -1,0 +1,18 @@
+#include <stdio.h>
+#include <string>
+#include "csapp.h"
+#include <pthread.h>
+
+
+int main(int argc, char *argv[]){
+  //./test 127.0.0.1 8080 (just need the target)
+
+
+  TargetIP = argv[1];
+  Targetport = atoi(argv[2]);
+  bzero(buf,MAXLINE);
+
+  int fd = open_clientfd(TargetIP, Targetport);
+
+
+}
