@@ -75,7 +75,8 @@ void CWorker:: processRequest(rio_t & client, int clientfd){
       printf("%s\n",buf);
 
     }
-    //handle map work;
+    //handle map work;//////////////////////////
+    myMapFunction.goMap(clientfd, client);
   }
   else if(strcmp(cmd,"REDUCE")==0){
     
@@ -86,13 +87,15 @@ void CWorker:: processRequest(rio_t & client, int clientfd){
       printf("%s and the length is \n",buf);
 
     }
-    //handle reduce work
-    
+    //handle reduce work/////////////////////
+    myReduceFunction.getInfo(clientfd, client, jobID);
     complete(jobID);
     
   }
   else if(strcmp(cmd,"DONE")==0){
-    //clear Map and Reduce;
+    //clear Map and Reduce;///////////////////////
+    myMapFunction.clearMap();
+    myReduceFunction.clearReduce();
     printf("done\n");
   }
   else if(strcmp(cmd,"MODIFY")==0){
@@ -100,13 +103,15 @@ void CWorker:: processRequest(rio_t & client, int clientfd){
     cmd = strtok_r(NULL, " \r\n",&saveptr);
     int jobID =atoi(cmd);
     NodeInfo n= readNodeInfo(client);
+    /////////////////////////////////
+    myReduceFunction.changeInfo(jobID, n);
     printf("MODIFY jobID is %d, ip %s, port %s\n",jobID, n.IP, n.port);
   }
   else if(strcmp(cmd,"GETMAP")==0){
     cmd = strtok_r(NULL, " \r\n",&saveptr);
     int jobID =atoi(cmd);
     //call get map
-    
+    myMapFunction.getMap(clientfd,jobID);
 
   }
 

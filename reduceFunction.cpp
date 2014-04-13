@@ -35,11 +35,11 @@ for(std::map<int,mapNode>::iterator it=mapAddress.begin(); it!=mapAddress.end();
 		int numBytes;
 		rio_t t;
 		Rio_readinitb( &t,fd);
-		std::cout<<"start while"<<std::endl;
+		//std::cout<<"start while"<<std::endl;
 		while(true){
   			numBytes = Rio_readlineb(&t, buf_r, MAXLINE);
   			if(numBytes==0){
-					std::cout<<"close fd"<<std::endl;
+					//std::cout<<"close fd"<<std::endl;
 					Close(fd);
 					break;
   			}
@@ -50,9 +50,9 @@ for(std::map<int,mapNode>::iterator it=mapAddress.begin(); it!=mapAddress.end();
 			//std::cout<<s_name<<std::endl;
 			char* r2 = strtok_r(NULL, "*",&saveptr);
 			int r_num=atoi(r2);
-			std::cout<<" aaa"<<r_num<<std::endl;
+			//std::cout<<" aaa"<<r_num<<std::endl;
 			myMap[s_name]+=r_num;
-			std::cout<<r_num<<std::endl;
+			//std::cout<<r_num<<std::endl;
 		}
 	}
 }
@@ -79,7 +79,7 @@ void reduceFunction::sendInfo(char* tip, int tport){
 		return;	
 	}
 	char buf[80];*/
-	std::cout<<"sendInfo"<<std::endl;
+	//std::cout<<"sendInfo"<<std::endl;
 	for (std::map<std::string,int>::iterator it=myMap.begin(); it!=myMap.end(); ++it){
 		std::cout<<it->first.data()<<" "<<it->second<<std::endl;
 	}
@@ -119,7 +119,7 @@ void reduceFunction::changeInfo(int jobID, NodeInfo newNode){
 	strcpy(a.mapIp,newNode.IP);
 	a.mapPort=atoi(newNode.port);
 	mapAddress[jobID]=a;
-	std::cout<<a.mapIp<<"  "<<a.mapPort<<std::endl;
+	//std::cout<<a.mapIp<<"  "<<a.mapPort<<std::endl;
 }
 ////////////////////////////////////////
 void reduceFunction::clearReduce(){
