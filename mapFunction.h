@@ -35,6 +35,8 @@ public:
 	void getMap(int fd, int ID);
 	imageInfo getImage(int fileID);
 	void clearMap();
+	void printMap();
+	
 };
 
 #endif

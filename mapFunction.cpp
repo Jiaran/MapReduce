@@ -74,6 +74,15 @@ int mapFunction::circleDetect(Mat image1){
 
 ///////////////////////////////////////////////////////////////
 void mapFunction::clearMap(){
-myMap.clear();
-finished.clear();
+	myMap.clear();
+	finished.clear();
+}
+///////////////////////////////////////////////////////////////
+void mapFunction::printMap(){
+	for (std::map<int, map<string,int> >::iterator it=myMap.begin(); it!=myMap.end(); ++it){
+		printf("mapWorker's job id is %d\n", it->first);
+		for (std::map<string,int>::iterator init=it->second.begin(); init!=it->second.end(); ++init){
+				printf("%s: %d\n", init->first.data(), init->second);
+			}
+	}
 }

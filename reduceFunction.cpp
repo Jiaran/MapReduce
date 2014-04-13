@@ -58,16 +58,25 @@ for(std::map<int,mapNode>::iterator it=mapAddress.begin(); it!=mapAddress.end();
 }
 /////////////////////////////////////////////////////////////
 void reduceFunction::sendInfo(){
-	int fd=Open_clientfd(dataSystemIp, dataSystemPort);
+	/*int fd=Open_clientfd(dataSystemIp, dataSystemPort);
 	if(fd<0){
 		printf("data system is missing.\n"); 
 		return;	
 	}
-	char buf[80];
+	char buf[80];*/
+	printf("print result:\n");
 	for (std::map<std::string,int>::iterator it=myMap.begin(); it!=myMap.end(); ++it){
-		sprintf(buf,"%s*%d\n",it->first.data(),it->second);
-      		Rio_writep(fd, buf, strlen(buf));
+		printf("%s: %d\n",it->first.data(),it->second);
+		//sprintf(buf,"%s*%d\n",it->first.data(),it->second);
+      		//Rio_writep(fd, buf, strlen(buf));
 	}
+	printf("print node addresses:\n");
+	for (std::map<int, mapNode>::iterator nit=mapAddress.begin(); nit!=mapAddress.end(); ++nit){
+		printf("%d: %s %d\n",nit->first, nit->second.mapIp, nit->second.mapPort);
+		//sprintf(buf,"%s*%d\n",it->first.data(),it->second);
+      		//Rio_writep(fd, buf, strlen(buf));
+	}
+
 
 }
 
