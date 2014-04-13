@@ -1,6 +1,6 @@
 #include "worker.h"
 
-
+extern NodeInfo FILE_SYSTEM;
 class Update : public TimerProcess{
 private:
   int fdtoMaster;
@@ -88,7 +88,7 @@ void CWorker:: processRequest(rio_t & client, int clientfd){
     }
     //handle reduce work
     
-    //complete(jobID);
+    complete(jobID);
     
   }
   else if(strcmp(cmd,"DONE")==0){
@@ -102,6 +102,14 @@ void CWorker:: processRequest(rio_t & client, int clientfd){
     NodeInfo n= readNodeInfo(client);
     printf("MODIFY jobID is %d, ip %s, port %s\n",jobID, n.IP, n.port);
   }
+  else if(strcmp(cmd,"GETMAP")==0){
+    cmd = strtok_r(NULL, " \r\n",&saveptr);
+    int jobID =atoi(cmd);
+    //call get map
+    
+
+  }
+
   Close(clientfd);
   
 }

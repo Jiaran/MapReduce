@@ -3,5 +3,5 @@
 using namespace std;
 
 int main(int argc, char ** argv){
-  cout<< "the string I want to print is "+Constant::HELLO_WORLD<<endl;
+  
 }

@@ -3,13 +3,29 @@ CC = g++
 DEBUG = -g
 CFLAGS =  -c $(DEBUG)
 LFLAGS =  $(DEBUG) 
+FILEOBJS = csapp.o filestalk.o 
 
-all: main testJ
+all: main testJ filestalk
 
 main : $(OBJS)
 	$(CC) $(LFLAGS) $(OBJS) -o main
-main.o : main.cpp constant.h
+
+main.o : main.cpp
 	$(CC) $(CFLAGS) main.cpp
 
-testJ : master.cpp master.h worker.cpp worker.h testJ.cpp csapp.c node.cpp
-	$(CC) master.cpp worker.cpp csapp.c node.cpp testJ.cpp -g  -o testJ -lpthread; 
+
+filestalk.o: filestalk.h filestalk.cpp
+	$(CC) $(CFLAGS)  -g filestalk.cpp 
+
+csapp.o: csapp.h csapp.c
+	$(CC) $(CFLAGS)  -g csapp.c
+
+
+filestalk: $(FILEOBJS)
+	$(CC) $(FILEOBJS) -o filestalk -lpthread
+
+
+
+
+testJ : master.cpp master.h worker.cpp worker.h testJ.cpp  node.cpp csapp.c
+	$(CC) master.cpp worker.cpp csapp.o node.cpp testJ.cpp -g  -o testJ -lpthread; 
