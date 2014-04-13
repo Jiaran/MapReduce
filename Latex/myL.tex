@@ -24,6 +24,12 @@ The first step would be find a comparitively clear photo of the face of the crim
 We know that in computer vision technology, it is not very hard to recognize a person from the video stream or the picutres, however, this might take 1 second each picture for normal computer. To catch the criminal, we need to position the criminal as far as possible, if the police do not own a super computer, it would take several days to get the location. However, with map reduce, they can distribute the jobs to several computer to search the criminal at the same time, this would save a lot of time!
 
 \begin{figure}[h!]
+
+  \centering
+    \includegraphics[width=1\textwidth]{2.png}
+    \caption{Detect a human.}
+\end{figure}
+\begin{figure}[h!]
   
   \centering
     \includegraphics[width=0.5\textwidth]{1.jpg}
@@ -31,7 +37,9 @@ We know that in computer vision technology, it is not very hard to recognize a p
 \end{figure}
 
 \section {Basic Concepts}
+In our project, we do not use the real face an pictures to realize our map-reduce function, instead, we focus on how to implement the map and reduce function in our whole system.
 
+We use C++ and OpenCV to create 500 pictures which contains several shapes in the same picture. We have circle, triangle, rectangle to represent the real pictures from the cameras. Suppose one of them demonstrates “crimal” and the others demonstrates “normal people”. If the circle represents our “criminal”, then our job is to find the circles from all the 500 pictures and return the location and times of where the circle shows. In our model, master is in charge of assinging jobs to a set of workers so that workers can know when they do “Map” and when they do “Reduce”. “Map” workers are in charge of using OpenCV to find where the circle is in the 500 pictures, “Reduce” workers are in charge of requesting the result from “Map” workers and adding them together. The filesystem is in charge of storing all the pictures and result calculated from “Reduce” workers. 
 
 \section {Implementation}
 \subsection{Components}
