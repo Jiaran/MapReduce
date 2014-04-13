@@ -119,6 +119,7 @@ void reduceFunction::getInfo(int fd, rio_t client, int id){
 		mapWorker.mapPort=port;
 		mapAddress[num]=mapWorker;
 	}
+
 	getMapInfo();
 	sendInfo();
 

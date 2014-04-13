@@ -87,11 +87,13 @@ void CWorker:: processRequest(rio_t & client, int clientfd){
     */
     //handle reduce work/////////////////////
     myReduceFunction.getInfo(clientfd, client, jobID);
+   
     complete(jobID);
     
   }
   else if(strcmp(cmd,"DONE")==0){
     //clear Map and Reduce;///////////////////////
+    myMapFunction.printMap();
     myMapFunction.clearMap();
     myReduceFunction.clearReduce();
     printf("done\n");
