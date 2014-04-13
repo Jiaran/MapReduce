@@ -1,4 +1,6 @@
 \documentclass[12pt]{article}
+
+\usepackage[pdftex]{graphicx}
 \begin{document}
 \title{Final Project Report : Locating Criminals Using MapReduce}
 \author{Cangji Wu , Jiaran Hao, Kangyi Zhang}
@@ -15,7 +17,12 @@ improve efficiency. In our implementation of MapReduce system, the mechanism to 
 \end{abstract} 
 
 \section {Introduction}
-
+\begin{figure}[h!]
+  
+  \centering
+    \includegraphics[width=0.5\textwidth]{1.jpg}
+    \caption{A picture of a gull.}
+\end{figure}
 
 \section {Basic Concepts}
 
@@ -96,15 +103,22 @@ Second, with more workers participating, the possibility of worker fault increas
 
 Third, as the file system is also distributed, bandwith usage when workers inquring input data can be minimized by smart arrangement of jobs. Most of the workers will just have to read data from itself or clos neighbours. This also will not be a problem. 
 
-However, the system has a special node. The work load of master may increase linearly as more workers coming in. Though master only handles management messages, lots of thread would be created 
+However, the system has a special node. The work load of master may increase linearly as more workers coming in. Though master only handles management messages, lots of threads would be created in master as concurrency is heavily used in our program to increase performance. These threads may modify the worker table and job list etc. We have to use locks to maintain thread-safe. However, locks serialize concurrent programs thus the performance is compromised. Our method to solve this is to only lock when necessary. Iterator invalidation principle would help us in this process.
+
+1) For data structure such as list or vector, add is invalidation free if no resizing happens. Deletion will not affect the elements before the deleted one.
+
+2) For associative data structure such as map or set, only the reference of the deleted element is invalid.
+
+These two principles will determine how to avoid unecessary locks. For example, if one thread adds a new node to worker table, we should lock against other threads which want to join or delete the worker table map. But it is not necessary to prevent a thread from modifying the existing element. For the thread removing nodes that fails to update , however, we should lock against modification.        
    
 
 \section{Experiment and Performance }
-\
+
+We create a program to generate random pictures as input. The program takes an integer a as input and generate a pictures with format number.placename.png.  Each pictures contains random shapes generate and their sizes are different. Then we make several copies of these pictures and store them in the nodes. We run our MapReduce application and get the output which contains location and spot frequency pairs to indicate how many times the specified shape appears in the location. The application successfully generates the output in a timely manner. Then we try to crash several workers and find that the application will still obtain the expected result but with delay. The time for the master to detect fault and reassign jobs attributes to this delay.
+  
 \section {Conclusion}
 
 \section*{Reference}
 
 
-this is my \emph{first} document prepared in \today 
 \end{document}
