@@ -18,7 +18,7 @@ for(std::map<int,mapNode>::iterator it=mapAddress.begin(); it!=mapAddress.end();
 	changeInfo(1, newNode);
 			}*/
 			printf("Node is missing.\n"); 
-			sleep(1);
+			//sleep(1);
 			//cound++;
 			continue;	
       		}
@@ -119,7 +119,6 @@ void reduceFunction::getInfo(int fd, rio_t client, int id){
 		mapWorker.mapPort=port;
 		mapAddress[num]=mapWorker;
 	}
-	while(true);
 	getMapInfo();
 	sendInfo();
 
@@ -145,7 +144,19 @@ void reduceFunction::setIPNode(int tid, char* tip, int tport){
 	a.mapPort=tport;
 	mapAddress[tid]=a;
 }
+///////////////////////////////////////////
+void reduceFunction::printReduce(){
+	printf("print result:\n");
+	for (std::map<std::string,int>::iterator it=myMap.begin(); it!=myMap.end(); ++it){
+		printf("%s: %d\n",it->first.data(),it->second);
+	}
+	printf("print node addresses:\n");
+	for (std::map<int, mapNode>::iterator nit=mapAddress.begin(); nit!=mapAddress.end(); ++nit){
+		printf("%d: %s %d\n",nit->first, nit->second.mapIp, nit->second.mapPort);
+	}
 
+
+}
 
 
 
