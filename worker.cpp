@@ -69,24 +69,22 @@ void CWorker:: processRequest(rio_t & client, int clientfd){
   }
   else if(strcmp(cmd,"MAP")==0){
     cmd = strtok_r(NULL, " \r\n",&saveptr);
-    
+    int jobID = atoi(cmd);
     printf("MAP it is , job ID %s\n",cmd);
-    while(numBytes = Rio_readlineb(&client, buf, MAXLINE)>0){
-      printf("%s\n",buf);
-
-    }
+    
     //handle map work;//////////////////////////
-    myMapFunction.goMap(clientfd, client);
+    myMapFunction.goMap(clientfd, client,jobID);
   }
   else if(strcmp(cmd,"REDUCE")==0){
     
     cmd = strtok_r(NULL, " \r\n",&saveptr);
     printf("REDUCE , job ID %s\n",cmd);
     int jobID = atoi(cmd);
-    while(numBytes = Rio_readlineb(&client, buf, MAXLINE)>0){
-      printf("%s and the length is \n",buf);
-
+    /*
+    while(numBytes = Rio_readlineb(&client, buf, MAXLINE)>0 ){
+      printf("buf is %s\n",buf);
     }
+    */
     //handle reduce work/////////////////////
     myReduceFunction.getInfo(clientfd, client, jobID);
     complete(jobID);

@@ -2,7 +2,7 @@ OBJS = main.o
 CC = g++
 DEBUG = -g
 CFLAGS =  -c $(DEBUG)
-LFLAGS =  $(DEBUG) 
+LFLAGS =  $(DEBUG) -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_objdetect 
 FILEOBJS = csapp.o filestalk.o 
 
 all: main testJ filestalk
@@ -27,5 +27,5 @@ filestalk: $(FILEOBJS)
 
 
 
-testJ : master.cpp master.h worker.cpp worker.h testJ.cpp  node.cpp csapp.c
-	$(CC) master.cpp worker.cpp csapp.o node.cpp testJ.cpp -g  -o testJ -lpthread; 
+testJ : master.cpp master.h worker.cpp worker.h testJ.cpp mapFunction.cpp reduceFunction.cpp  node.cpp csapp.c
+	$(CC) master.cpp worker.cpp csapp.o node.cpp mapFunction.cpp reduceFunction.cpp testJ.cpp -g  -o testJ -lpthread  $(LFLAGS)

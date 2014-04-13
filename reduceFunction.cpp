@@ -91,12 +91,13 @@ void reduceFunction::getInfo(int fd, rio_t client, int id){
 	char buf1[MAXLINE];
 	int numBytes;
   	char * saveptr=NULL;
-	Rio_readinitb( &client,fd);
+	
 	while(true){
   		numBytes = Rio_readlineb(&client, buf1, MAXLINE);
-		if(numBytes<0){
+		if(numBytes==0){
     		break;
   		}
+		printf("buf1 is %s\n", buf1);
 		char* d1 = strtok_r(buf1, "*",&saveptr);
 		char ip[20];
 		strcpy(ip,d1);
@@ -109,6 +110,7 @@ void reduceFunction::getInfo(int fd, rio_t client, int id){
 		mapWorker.mapPort=port;
 		mapAddress[num]=mapWorker;
 	}
+	while(true);
 	getMapInfo();
 	sendInfo();
 
