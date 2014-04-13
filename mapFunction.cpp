@@ -40,24 +40,16 @@ int mapFunction::circleDetect(Mat image1){
 			imageInfo myImage=getImage(i);
 			if(circleDetect(myImage.myPic)==0) continue;
 			else{
-				cout<<"+1";
 				jobMap[myImage.name]=jobMap[myImage.name]+1;
 			}
 		}
 		myMap[jobID]=jobMap;
-		cout<<jobID<<" "<<jobMap["shishi"]<<endl;
 		finished[jobID]=true;
-		
-		cout<<"what";
-		pthread_mutex_unlock(&mtx); 
-		cout<<"what"; 
-    		pthread_exit(NULL); 
-		cout<<"what";
+		pthread_mutex_unlock(&mtx);
 		//Close(fd);
 	}
 ///////////////////////////////////////////////////////////////
 	imageInfo mapFunction::getImage(int fileID){
-		cout<<"shishi"<<endl;
 		imageInfo result;
 		result.name="shishi";
 		result.myPic=imread("shishi.jpg",CV_LOAD_IMAGE_COLOR);
@@ -74,11 +66,10 @@ int mapFunction::circleDetect(Mat image1){
 		map<string,int> jobMap=myMap[ID];
 		char buf[MAXLINE];
 		for (map<string,int>::iterator it=jobMap.begin(); it!=jobMap.end(); ++it){
-		sprintf(buf,"%s*%d\r",it->first.data(),it->second);
+		sprintf(buf,"%s*%d\n",it->first.data(),it->second);
   		Rio_writep(fd, buf, strlen(buf));
 		}
-		pthread_mutex_unlock(&mtx);  
-    		pthread_exit(NULL); 
+		pthread_mutex_unlock(&mtx); 
 	}
 
 ///////////////////////////////////////////////////////////////
