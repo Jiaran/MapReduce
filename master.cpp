@@ -7,6 +7,7 @@
 #include <string>
 //using namespace std;
 
+extern NodeInfo FILE_SYSTEM;
 // strategy classes, no need to define in their own file. In fact it's just a function for Master.
 class Print : public Strategy{
 public:
@@ -174,6 +175,7 @@ void Master:: assignWork(int total){
   int size = workers.size();
   if(size<= numReduce){
     std::cout<< "Not enough wokers. Please try again later"<<std::endl;
+    return;
   }
   int numMap = size - numReduce;
   std::vector< std::vector<int> >  temp;
@@ -284,6 +286,18 @@ void Master:: done(){
   Done d;
   iterateWorkers(d);
   jobs.clear();
+  int fd = connectTo(FILE_SYSTEM);
+  char buf[5];
+  sprintf(buf,"ALL\n");
+  Rio_writep(fd, buf, strlen(buf));
+  int numBytes;
+  rio_t client;
+  Rio_readinitb( &client,fd);
+  printf("The track of the criminal is: \n");
+  while(numBytes=Rio_readlineb(&client, buf, MAXLINE)>0){
+    printf("%s\n",buf);
+  }
+  Close(fd);
   isDone=true;
   //output result send all to global file system and output;
   

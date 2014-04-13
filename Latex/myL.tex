@@ -1,4 +1,6 @@
 \documentclass[12pt]{article}
+
+\usepackage[pdftex]{graphicx}
 \begin{document}
 \title{Final Project Report : Locating Criminals Using MapReduce}
 \author{Cangji Wu , Jiaran Hao, Kangyi Zhang}
@@ -15,7 +17,12 @@ improve efficiency. In our implementation of MapReduce system, the mechanism to 
 \end{abstract} 
 
 \section {Introduction}
-
+\begin{figure}[h!]
+  
+  \centering
+    \includegraphics[width=0.5\textwidth]{1.jpg}
+    \caption{A picture of a gull.}
+\end{figure}
 
 \section {Basic Concepts}
 
@@ -107,6 +114,8 @@ These two principles will determine how to avoid unecessary locks. For example, 
 
 \section{Experiment and Performance }
 
+We create a program to generate random pictures as input. The program takes an integer a as input and generate a pictures with format number.placename.png.  Each pictures contains random shapes generate and their sizes are different. Then we make several copies of these pictures and store them in the nodes. We run our MapReduce application and get the output which contains location and spot frequency pairs to indicate how many times the specified shape appears in the location. The application successfully generates the output in a timely manner. Then we try to crash several workers and find that the application will still obtain the expected result but with delay. The time for the master to detect fault and reassign jobs attributes to this delay.
+  
 \section {Conclusion}
 
 \section*{Reference}
