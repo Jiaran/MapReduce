@@ -17,24 +17,24 @@ int mapFunction::circleDetect(Mat image1){
 	}
 
 /////////////////////////////////////////////////////////////////
-	void mapFunction::goMap(int fd, rio_t client){
+	void mapFunction::goMap(int fd, rio_t client, int ID){
 		pthread_mutex_lock(&mtx);
 		char buf1[MAXLINE];
-		int jobID;
+		int jobID=ID;
 		int numBytes;
   		char * saveptr=NULL;
   		char * id1;
 		char * id2;
-		char * id3;
+		//char * id3;
 		//Rio_readinitb( &client,fd);
   		numBytes = Rio_readlineb(&client, buf1, MAXLINE);
 		if(numBytes<0) return;
 		id1 = strtok_r(buf1, "*",&saveptr);
 		int fileStartID=atoi(id1);
-		id2 = strtok_r(NULL, "*",&saveptr);
+		id2 = strtok_r(NULL, "* \r\n",&saveptr);
 		int fileEndID=atoi(id2);
-		id3 = strtok_r(NULL, "* \r\n",&saveptr);
-		jobID=atoi(id3);
+		//id3 = strtok_r(NULL, "* \r\n",&saveptr);
+		//jobID=atoi(id3);
 		map<string,int> jobMap;
 		for(int i=fileStartID;i<=fileEndID;i++){
 			imageInfo myImage=getImage(i);

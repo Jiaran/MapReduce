@@ -30,7 +30,7 @@ private:
 	
 public:
 	mapFunction();
-	void goMap(int fd, rio_t client);
+	void goMap(int fd, rio_t client, int ID);
 	bool ifDone(int id);
 	void getMap(int fd, int ID);
 	imageInfo getImage(int fileID);
