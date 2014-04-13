@@ -16,31 +16,85 @@ void ignore() {
 }
 map <string, int> place_map;
 
-// void format_log_entry(char * logstring, int sock, char * uri, int size)
-// {
-//   time_t  now;
-//   char    buffer[MAXLINE];
-//   struct  sockaddr_in addr;
-//   unsigned  long  host;
-//   unsigned  char a, b, c, d;
-//   int    len = sizeof(addr);
 
-//   now = time(NULL);
-//   strftime(buffer, MAXLINE, "%a %d %b %Y %H:%M:%S %Z", localtime(&now));
+FileDir::FileDir(){
 
-//   if (getpeername(sock, (struct sockaddr *) & addr, &len)) {
-//     unix_error("Can't get peer name");
-//   }
+}
 
-//   host = ntohl(addr.sin_addr.s_addr);
-//   printf("original host is : %ld",host);
-//   a = host >> 24;
-//   b = (host >> 16) & 0xff;
-//   c = (host >> 8) & 0xff;
-//   d = host & 0xff;
+void FileDir::Printfile(){
+	DIR * dir;
+  	dirent* pdir;
 
-//   sprintf(logstring, "%s: %d.%d.%d.%d %s %d\n", buffer, a,b,c,d, uri, size);
-// }
+  	dir = opendir(".");   // open current directory
+  	pdir = readdir(dir);
+  	while (pdir) {
+  		cout << pdir->d_name << endl;
+  		pdir = readdir(dir);
+        
+    }
+    closedir(dir);
+}
+
+void FileDir::Createmap(){
+	// create a map stores the file under this folder.
+	DIR * dir = NULL;
+  	dirent* pdir = NULL;
+  	char * saveptr = NULL;
+  	char * cmd;
+  	int id;
+  	string filename;
+  	char f_name[80];
+  	//map < int, char* > mymap;
+  	char name[80];
+  	dir = opendir("./image");   // open current directory
+  	pdir = readdir(dir);
+  	while (pdir) {
+  		
+        strcpy(name,pdir->d_name);
+        
+        if(strlen(name)>2){
+        	// remove . and ..
+        	cmd = strtok_r(name,".", &saveptr);
+        	if(isdigit(cmd[0])) {
+        		cout << pdir->d_name << endl;
+        		id = atoi(pdir->d_name);
+        		filename = strtok_r(NULL, ".", &saveptr);
+        		cout << id << " " << filename << endl;
+        		//strcpy(f_name,filename);
+        		mymap.insert(pair< int, string >(id, filename));
+        		//Printmap();
+        	}
+        }
+        pdir = readdir(dir);
+    }
+    closedir(dir);
+}
+
+void FileDir::Printmap(){
+	map<int, string>:: iterator it;
+  	for (it = mymap.begin(); it!=mymap.end(); ++it)
+  	{
+  		cout << it->first << " => " << it->second << '\n';
+  	}
+}
+
+
+image_info* FileDir::NumtoInfo(int id){
+	map<int, string>::iterator it;
+	it = mymap.find(id);
+	image_info *res = new image_info;
+	res->id = it->first;
+	res->filename = it->second;
+	cout << res->id << ", " << res->filename << endl; 
+	cout << "key :" << it->first << endl;
+	cout << "value :"<< it->second << endl;
+	return res;
+}
+
+
+void printimage_info(image_info *res){
+	cout<< res->id << "=>" << res->filename <<endl;
+}
 
 
 
@@ -80,7 +134,7 @@ int main(int argc, char *argv[]){
 
   Pthread_create(&tid, NULL, listening, NULL);
   Pthread_detach(tid);
-  // 建立一个listening 相当于新开一个进程，然后接着干下面的！！@
+  
   while(1){
 
   }
@@ -144,21 +198,23 @@ void *peertalk(void* args)
     printf("enter ADD\n");
     while(numBytes = Rio_readlineb(&client, buf1, MAXLINE)>0){
       map< string,int>::iterator it;
-      char* place1 = strtok_r(NULL, "#",&saveptr);
+      char* place1 = strtok_r(buf1, "#",&saveptr);
       string place_s(place1);
       int times1 = atoi(strtok_r(NULL, "#",&saveptr));
-      printf("place:%s, times:\n", place1,times1);
+      printf("place:%s, times:%d\n", place1,times1);
       it = place_map.find(place_s);
       if (it != place_map.end())
       {
-	it->second += times1;
+        it->second += times1;
       }
       else{
-	place_map.insert(pair<string, int>(place_s, times1));
+        place_map.insert(pair<string, int>(place_s, times1));
+	printf("place:%s, times:%d\n", place1,times1);
       }
-      // do the math calculation.
-      
-      //  mutecx place right?  
+	it=place_map.find("chapel");
+	if(it!= place_map.end()){
+		printf("chapel times is %d\n",it->second);
+	}	
     }
     pthread_mutex_unlock(&mutex);
   }
@@ -169,17 +225,18 @@ void *peertalk(void* args)
     
     pthread_mutex_init(&mutex, NULL);
     //while() iterator
-    sprintf(buf2,"%s#%d\n",place,times);
-    Rio_writep(clientfd,buf2,strlen(buf2));
-    sprintf(buf2,"%s#%d\n",place1,times);
-    Rio_writep(clientfd,buf2,strlen(buf2));
-    printf("%s\n", buf2 );
-    
-    
-    //  mutecx place right?  
+    map< string,int>::iterator it;
+    it = place_map.begin();
+    while(it!=place_map.end()){
+      sprintf(buf2,"%s#%d\n",it->first.c_str(),it->second);
+      Rio_writep(clientfd,buf2,strlen(buf2));
+      it++;
+      printf("%s\n", buf2 );
+    }
   }
   
   Close(clientfd);
   free(args);
 }
+
 
