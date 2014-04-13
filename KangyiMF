@@ -1,0 +1,10 @@
+CC = g++
+DEBUG = -g
+CFLAGS =  -c $(DEBUG)
+LFLAGS =  $(DEBUG) 
+
+all: testJ
+
+
+testJ : master.cpp master.h worker.cpp worker.h testJ.cpp  node.cpp mapFunction.cpp reduceFunction.cpp csapp.c
+	$(CC) master.cpp worker.cpp csapp.c node.cpp mapFunction.cpp reduceFunction.cpp testJ.cpp -g  -o testJ -lpthread -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_objdetect ; 
