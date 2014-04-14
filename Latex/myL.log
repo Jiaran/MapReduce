@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2014.3.30)  14 APR 2014 17:04
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2014.3.30)  14 APR 2014 19:21
 entering extended mode
  %&-line parsing enabled.
 **myL.tex
@@ -109,7 +109,7 @@ Here is how much of TeX's memory you used:
 /share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf
 -texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fon
 ts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on myL.pdf (7 pages, 117395 bytes).
+Output written on myL.pdf (7 pages, 117397 bytes).
 PDF statistics:
  47 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
