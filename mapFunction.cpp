@@ -11,8 +11,19 @@ int mapFunction::circleDetect(Mat image1){
         IplImage* gray = cvCreateImage( cvGetSize(img), img->depth, 1);
         CvMemStorage* storage = cvCreateMemStorage(0);
         cvCvtColor( img, gray, CV_RGB2GRAY );
-        cvSmooth( gray, gray, CV_GAUSSIAN, 9, 9 );
-        CvSeq* circles = cvHoughCircles( gray, storage, CV_HOUGH_GRADIENT, 2, gray->height/4, 200, 100 );
+        //cvSmooth( gray, gray, CV_GAUSSIAN, 9, 9 );
+        CvSeq* circles = cvHoughCircles( gray, storage, CV_HOUGH_GRADIENT, 2, gray->height/4, 200, 100);
+	/*for (int i = 0; i < circles->total; i++) 
+    {
+         float* p = (float*)cvGetSeqElem( circles, i );
+         cvCircle( img, cvPoint(cvRound(p[0]),cvRound(p[1])), 
+             3, CV_RGB(0,255,0), -1, 8, 0 );
+         cvCircle( img, cvPoint(cvRound(p[0]),cvRound(p[1])), 
+             cvRound(p[2]), CV_RGB(255,0,0), 3, 8, 0 );
+    }
+    cvNamedWindow( "circles", 1 );
+    cvShowImage( "circles", img );
+	waitKey(0);*/
         if(circles->total==0) return 0;
 	else return 1;
 	}
@@ -73,6 +84,8 @@ int mapFunction::circleDetect(Mat image1){
 		sprintf(buf,"%s*%d\n",it->first.data(),it->second);
   		Rio_writep(fd, buf, strlen(buf));
 		}
+		sprintf(buf,"FINISH*\n");
+  		Rio_writep(fd, buf, strlen(buf));
 		pthread_mutex_unlock(&mtx);
 		std::cout<<"getMap done"<<std::endl;
 		

@@ -5,8 +5,8 @@
 
 
 reduceFunction::reduceFunction(){
-strcpy(dataSystemIp,FILE_SYSTEM.IP);
-dataSystemPort=atoi(FILE_SYSTEM.port);
+strcpy(dataSystemIp,"127.0.0.1");
+dataSystemPort=8090;
 }
 ////////////////////////////////////////////////////////
 void reduceFunction::getMapInfo(){
@@ -26,37 +26,49 @@ for(std::map<int,mapNode>::iterator it=mapAddress.begin(); it!=mapAddress.end();
 			continue;	
       		}
 		else{
-			break;
+			//break;
+
+			std::cout<<"geting map info"<<std::endl;
+			char buf_s[80];
+			sprintf(buf_s,"GETMAP %d\n",it->first);
+	      		Rio_writep(fd, buf_s, strlen(buf_s));
+			char buf_r[80];
+			char * saveptr=NULL;
+			int numBytes;
+			rio_t t;
+			Rio_readinitb( &t,fd);
+			bool finished=false;
+			std::map<std::string, int> tempMap;
+			while(numBytes = Rio_readlineb(&t, buf_r, MAXLINE)>0){
+	  			if(numBytes<=0){
+						std::cout<<"close fd"<<std::endl;
+						break;
+	  			}
+				printf("numBytes is %d\n", numBytes);
+	  			char* r1 = strtok_r(buf_r, "*",&saveptr);
+
+				char r_name[80];
+				strcpy(r_name,r1);
+				std::string s_name(r_name);
+				if(s_name=="FINISH"){
+					finished=true;
+					break;
+				}
+				char* r2 = strtok_r(NULL, "*",&saveptr);
+				int r_num=atoi(r2);
+				tempMap[s_name]+=r_num;
+				//std::cout<<r_num<<std::endl;
+			}
+			if(finished){
+				for(std::map<std::string,int>::iterator tempit=tempMap.begin(); tempit!=tempMap.end(); ++tempit){
+					myMap[tempit->first]=tempit->second;
+				}
+				break;
+			}
+			continue;
 		}
 	}
-
-		std::cout<<"geting map info"<<std::endl;
-		char buf_s[80];
-		sprintf(buf_s,"GETMAP %d\n",it->first);
-      		Rio_writep(fd, buf_s, strlen(buf_s));
-		char buf_r[80];
-		char * saveptr=NULL;
-		int numBytes;
-		rio_t t;
-		Rio_readinitb( &t,fd);
-		while(numBytes = Rio_readlineb(&t, buf_r, MAXLINE)>0){
-
-  			if(numBytes<=0){
-					std::cout<<"close fd"<<std::endl;
-					break;
-  			}
-			printf("numBytes is %d\n", numBytes);
-  			char* r1 = strtok_r(buf_r, "*",&saveptr);
-
-			char r_name[80];
-			strcpy(r_name,r1);
-			std::string s_name(r_name);
-			std::cout<<"ssss"<<s_name<<std::endl;
-			char* r2 = strtok_r(NULL, "*",&saveptr);
-			int r_num=atoi(r2);
-			myMap[s_name]+=r_num;
-			std::cout<<r_num<<std::endl;
-		}
+		
 	}
 }
 /////////////////////////////////////////////////////////////
