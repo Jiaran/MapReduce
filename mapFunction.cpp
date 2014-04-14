@@ -3,6 +3,7 @@
 
 mapFunction::mapFunction(){
 pthread_mutex_init(&mtx,NULL);
+myFile.Createmap();
 }
 
 int mapFunction::circleDetect(Mat image1){
@@ -38,6 +39,7 @@ int mapFunction::circleDetect(Mat image1){
 		map<string,int> jobMap;
 		for(int i=fileStartID;i<=fileEndID;i++){
 			imageInfo myImage=getImage(i);
+			printf("file name %s", myImage.name.data());
 			if(circleDetect(myImage.myPic)==0) continue;
 			else{
 				jobMap[myImage.name]=jobMap[myImage.name]+1;
@@ -50,10 +52,11 @@ int mapFunction::circleDetect(Mat image1){
 	}
 ///////////////////////////////////////////////////////////////
 	imageInfo mapFunction::getImage(int fileID){
-		imageInfo result;
+		/*imageInfo result;
 		result.name="shishi";
 		result.myPic=imread("shishi.jpg",CV_LOAD_IMAGE_COLOR);
-		return result;
+		return result;*/
+		return myFile.NumtoInfo(fileID);
 	}
 ///////////////////////////////////////////////////////////////
 	bool mapFunction::ifDone(int id){
@@ -66,10 +69,13 @@ int mapFunction::circleDetect(Mat image1){
 		map<string,int> jobMap=myMap[ID];
 		char buf[MAXLINE];
 		for (map<string,int>::iterator it=jobMap.begin(); it!=jobMap.end(); ++it){
+		std::cout<<"2 2 2 2 2 2 2"<<std::endl;
 		sprintf(buf,"%s*%d\n",it->first.data(),it->second);
   		Rio_writep(fd, buf, strlen(buf));
 		}
-		pthread_mutex_unlock(&mtx); 
+		pthread_mutex_unlock(&mtx);
+		std::cout<<"getMap done"<<std::endl;
+		
 	}
 
 ///////////////////////////////////////////////////////////////

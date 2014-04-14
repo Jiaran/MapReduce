@@ -10,16 +10,17 @@
 #include <map>
 #include <iostream>
 #include "csapp.h"
+#include "filestalk.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 using namespace std;
 using namespace cv;
-
+/*
 struct imageInfo{
 	string name;
 	Mat myPic;
-};
+};*/
 
 class mapFunction{
 private:
@@ -27,6 +28,7 @@ private:
 	map<int, bool> finished;
 	pthread_mutex_t mtx;
 	int circleDetect(Mat image1);
+	FileDir myFile;
 	
 public:
 	mapFunction();

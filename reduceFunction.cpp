@@ -4,7 +4,10 @@
 //using namespace std;
 
 
-
+reduceFunction::reduceFunction(){
+strcpy(dataSystemIp,"127.0.0.1");
+dataSystemPort=8085;
+}
 ////////////////////////////////////////////////////////
 void reduceFunction::getMapInfo(){
 for(std::map<int,mapNode>::iterator it=mapAddress.begin(); it!=mapAddress.end(); ++it){
@@ -18,7 +21,7 @@ for(std::map<int,mapNode>::iterator it=mapAddress.begin(); it!=mapAddress.end();
 	changeInfo(1, newNode);
 			}*/
 			printf("Node is missing.\n"); 
-			//sleep(1);
+			sleep(1);
 			//cound++;
 			continue;	
       		}
@@ -27,6 +30,7 @@ for(std::map<int,mapNode>::iterator it=mapAddress.begin(); it!=mapAddress.end();
 		}
 	}
 
+		std::cout<<"geting map info"<<std::endl;
 		char buf_s[80];
 		sprintf(buf_s,"GETMAP %d\n",it->first);
       		Rio_writep(fd, buf_s, strlen(buf_s));
@@ -35,47 +39,52 @@ for(std::map<int,mapNode>::iterator it=mapAddress.begin(); it!=mapAddress.end();
 		int numBytes;
 		rio_t t;
 		Rio_readinitb( &t,fd);
-		//std::cout<<"start while"<<std::endl;
-		while(true){
-  			numBytes = Rio_readlineb(&t, buf_r, MAXLINE);
-  			if(numBytes==0){
-					//std::cout<<"close fd"<<std::endl;
-					Close(fd);
+		while(numBytes = Rio_readlineb(&t, buf_r, MAXLINE)>0){
+
+  			if(numBytes<=0){
+					std::cout<<"close fd"<<std::endl;
 					break;
   			}
+			printf("numBytes is %d\n", numBytes);
   			char* r1 = strtok_r(buf_r, "*",&saveptr);
+
 			char r_name[80];
 			strcpy(r_name,r1);
 			std::string s_name(r_name);
-			//std::cout<<s_name<<std::endl;
+			std::cout<<"ssss"<<s_name<<std::endl;
 			char* r2 = strtok_r(NULL, "*",&saveptr);
 			int r_num=atoi(r2);
-			//std::cout<<" aaa"<<r_num<<std::endl;
 			myMap[s_name]+=r_num;
-			//std::cout<<r_num<<std::endl;
+			std::cout<<r_num<<std::endl;
 		}
 	}
 }
 /////////////////////////////////////////////////////////////
 void reduceFunction::sendInfo(){
-	/*int fd=Open_clientfd(dataSystemIp, dataSystemPort);
+	printf("print result:\n");
+	int fd=Open_clientfd(dataSystemIp, dataSystemPort);
+	printf("%d\n",fd);
 	if(fd<0){
 		printf("data system is missing.\n"); 
 		return;	
 	}
-	char buf[80];*/
+	char buf[80];
 	printf("print result:\n");
+	sprintf(buf,"ADD\n");
+      	Rio_writep(fd, buf, strlen(buf));
 	for (std::map<std::string,int>::iterator it=myMap.begin(); it!=myMap.end(); ++it){
-		printf("%s: %d\n",it->first.data(),it->second);
-		//sprintf(buf,"%s*%d\n",it->first.data(),it->second);
-      		//Rio_writep(fd, buf, strlen(buf));
+		//printf("%s: %d\n",it->first.data(),it->second);
+		sprintf(buf,"%s#%d\n",it->first.data(),it->second);
+      		Rio_writep(fd, buf, strlen(buf));
 	}
-	printf("print node addresses:\n");
+	printf("aaa: %s", buf);
+	close(fd);
+	/*printf("print node addresses:\n");
 	for (std::map<int, mapNode>::iterator nit=mapAddress.begin(); nit!=mapAddress.end(); ++nit){
 		printf("%d: %s %d\n",nit->first, nit->second.mapIp, nit->second.mapPort);
 		//sprintf(buf,"%s*%d\n",it->first.data(),it->second);
       		//Rio_writep(fd, buf, strlen(buf));
-	}
+	}*/
 
 
 }
@@ -119,7 +128,6 @@ void reduceFunction::getInfo(int fd, rio_t client, int id){
 		mapWorker.mapPort=port;
 		mapAddress[num]=mapWorker;
 	}
-
 	getMapInfo();
 	sendInfo();
 

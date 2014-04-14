@@ -25,7 +25,7 @@ int dataSystemPort;
 std::map<int, mapNode> mapAddress;
 std::map<std::string,int> myMap;
 public:
-
+reduceFunction();
 void getInfo(int fd, rio_t client, int id);
 void getMapInfo();
 void sendInfo();
@@ -34,7 +34,7 @@ void clearReduce();
 ///////////////////for test/////////////////
 void setIPNode(int tid, char* tip, int tport);
 void sendInfo(char* tip, int tport);
-
+void printReduce();
 
 };
 
