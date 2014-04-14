@@ -9,20 +9,22 @@
 #include <ctype.h>  // isdigit
 #include <iostream>
 #include <map>
+#include <stdio.h>
+#include "csapp.h"
+#include <pthread.h>
+#include "opencv/cxcore.h"
+#include "opencv2/opencv.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
 
 using namespace std;
+using namespace cv;
 
-void ignore();
 
-void *peertalk(void* args);
-void *listening(void* args);
-
-typedef struct image_info
-{
-	//cv::Mat image_mat; // not sure
-	int id;
-	string filename;	
-}image_info;
+struct imageInfo{
+	string name;
+	Mat myPic;
+};
 
 // The File System
 
@@ -39,11 +41,11 @@ public:
 	void Createmap();
 	void Printmap();
 	//void PutinMap(int id, char* filename);
-	image_info* NumtoInfo(int id);
+	imageInfo NumtoInfo(int id);
 
 };
 
-void printimage_info(image_info *res);
+
 
 
 #endif
