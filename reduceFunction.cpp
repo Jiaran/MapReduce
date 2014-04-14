@@ -5,8 +5,8 @@
 
 
 reduceFunction::reduceFunction(){
-strcpy(dataSystemIp,"127.0.0.1");
-dataSystemPort=8085;
+strcpy(dataSystemIp,FILE_SYSTEM.IP);
+dataSystemPort=atoi(FILE_SYSTEM.port);
 }
 ////////////////////////////////////////////////////////
 void reduceFunction::getMapInfo(){

@@ -12,6 +12,7 @@
 #include <map>
 #include "node.h"
 
+extern FILE_SYSTEM;
 
 struct mapNode{
 	char mapIp[20];
