@@ -17,7 +17,8 @@ filestalk.o: filestalk.cpp
 	$(CC) $(CFLAGS) -c -g filestalk.cpp
 
 filestalk: $(OBJS)
-	$(CC)  $(OBJS) -o filestalk -lm $(LDFLAGS)
+	$(CC) $(LDFLAGS) $(OBJS) -o filestalk -lm 
+#handin:
 #	cp proxy.c $(INDIR)/$(TEAM)-$(VERSION)-proxy.c
 #	cp csapp.c $(INDIR)/$(TEAM)-$(VERSION)-csapp.c
 #	cp csapp.h $(INDIR)/$(TEAM)-$(VERSION)-csapp.h
