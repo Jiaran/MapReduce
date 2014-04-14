@@ -12,7 +12,7 @@ void FileDir::Printfile(){
   	dir = opendir(".");   // open current directory
   	pdir = readdir(dir);
   	while (pdir) {
-  		cout << pdir->d_name << endl;
+  		//cout << pdir->d_name << endl;
   		pdir = readdir(dir);
         
     }
@@ -40,10 +40,10 @@ void FileDir::Createmap(){
         	// remove . and ..
         	cmd = strtok_r(name,".", &saveptr);
         	if(isdigit(cmd[0])) {
-        		cout << pdir->d_name << endl;
+        		//cout << pdir->d_name << endl;
         		id = atoi(pdir->d_name);
         		filename = strtok_r(NULL, ".", &saveptr);
-        		cout << id << " " << filename << endl;
+        		//cout << id << " " << filename << endl;
         		//strcpy(f_name,filename);
         		mymap.insert(pair< int, string >(id, filename));
         		//Printmap();

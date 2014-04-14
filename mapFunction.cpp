@@ -39,9 +39,10 @@ int mapFunction::circleDetect(Mat image1){
 		map<string,int> jobMap;
 		for(int i=fileStartID;i<=fileEndID;i++){
 			imageInfo myImage=getImage(i);
-			printf("file name %s", myImage.name.data());
+			//printf("%dfile name %s\n", i, myImage.name.data());
 			if(circleDetect(myImage.myPic)==0) continue;
 			else{
+				printf("found %d %s\n",i, myImage.name.data());
 				jobMap[myImage.name]=jobMap[myImage.name]+1;
 			}
 		}
@@ -69,7 +70,6 @@ int mapFunction::circleDetect(Mat image1){
 		map<string,int> jobMap=myMap[ID];
 		char buf[MAXLINE];
 		for (map<string,int>::iterator it=jobMap.begin(); it!=jobMap.end(); ++it){
-		std::cout<<"2 2 2 2 2 2 2"<<std::endl;
 		sprintf(buf,"%s*%d\n",it->first.data(),it->second);
   		Rio_writep(fd, buf, strlen(buf));
 		}
@@ -88,7 +88,7 @@ void mapFunction::printMap(){
 	for (std::map<int, map<string,int> >::iterator it=myMap.begin(); it!=myMap.end(); ++it){
 		printf("mapWorker's job id is %d\n", it->first);
 		for (std::map<string,int>::iterator init=it->second.begin(); init!=it->second.end(); ++init){
-				printf("%s: %d\n", init->first.data(), init->second);
+				//printf("%s: %d\n", init->first.data(), init->second);
 			}
 	}
 }
