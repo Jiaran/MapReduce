@@ -17,20 +17,47 @@ improve efficiency. In our implementation of MapReduce system, the mechanism to 
 \end{abstract} 
 
 \section {Introduction}
+
+Our project try to help the police to build a “Criminal Positioning System”. Imagine the police want to find where the certain criminal is, what he would do?
+The first step would be find a comparatively clear photo of the face of the criminal, and then using the video streams or pictures from the transportation camera or other devices of the whole town or city to find whether the criminal has shown in the specific area, if has, he might show again in the area where he has shown most of times. Then the police can send policemen to this area to wait to catch this criminal until he shows again. Figure 1 shows how to detect a human face with openCV.
+We know that in computer vision technology, it is not very hard to recognize a person from the video stream or the pictures, however, this might take 1 second each picture for normal computer. To catch the criminal, we need to position the criminal as far as possible, if the police do not own a super computer, it would take several days to get the location. However, with map reduce, they can distribute the jobs to several computer to search the criminal at the same time, this would save a lot of time!
+
+\begin{figure}[h!]
+  
+  \centering
+    \includegraphics[width=1\textwidth]{2.png}
+    \caption{Detect a human using his photo.}
+\end{figure}
+
+
+
+\section {Basic Concepts}
+
+In our project, we do not use the real face an pictures to realize our map-reduce function, instead, we focus on how to implement the map and reduce function in our whole system.
+
+We use C++ and OpenCV to create a lot of pictures which contains several shapes in the same picture. We have circle, triangle, rectangle to represent the real pictures from the cameras. 
+
 \begin{figure}[h!]
   
   \centering
     \includegraphics[width=0.5\textwidth]{1.jpg}
-    \caption{A picture of a gull.}
+    \caption{Sample image of our test images.}
 \end{figure}
 
-\section {Basic Concepts}
+Figure 2 shows what our images like. Suppose one of them demonstrates “criminal” and the others demonstrates “normal people”. If the circle represents our “criminal”, then our job is to find the circles from all the pictures and return the location and times of where the circle shows. In our model, master is in charge of assigning jobs to a set of workers so that workers can know when they do “Map” and when they do “Reduce”. “Map” workers are in charge of using OpenCV to find where the circle is in the pictures, “Reduce” workers are in charge of requesting the result from “Map” workers and adding them together. The file system is in charge of storing all the pictures and the result calculated from “Reduce” workers and it has the communication with the “Reduce” workers and “Master”. We will discuss their jobs in detail below.
 
+
+\begin{figure}[h!]
+  
+  \centering
+    \includegraphics[width=1\textwidth]{3.png}
+    \caption{Whole system.}
+\end{figure}
 
 \section {Implementation}
 \subsection{Components}
 
-In our implementation, we have five main components. 
+In our implementation, we have five main components.  Figure 3 shows how our whole system works.
 Map function and Reduce function are separated from Worker such that any Map function and Reduce function which
 follows the interface can be integrated into our system.
 Master and Worker are designed to manage the whole structure. In other words, they manage the communication that
@@ -124,6 +151,7 @@ We create a program to generate random pictures as input. The program takes an i
 \section {Conclusion}
 
 \section*{Reference}
-
+[1] Jeffrey Dean, Sanjay Ghemawat, MapReduce: Simplified Data Processing on Large Clusters, 2004 \\
+{[2]} Wikipedia contributors. "MapReduce." Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia, 10 Apr. 2014. Web. 14 Apr. 2014.
 
 \end{document}
