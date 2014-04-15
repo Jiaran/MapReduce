@@ -18,9 +18,9 @@ improve efficiency. In our implementation of MapReduce system, the mechanism to 
 
 \section {Introduction}
 
-Our project try to help the police to build a “Criminal Positioning System”. Imagine the police want to find where the certain criminal is, what he would do?
-The first step would be find a comparatively clear photo of the face of the criminal, and then using the video streams or pictures from the transportation camera or other devices of the whole town or city to find whether the criminal has shown in the specific area, if has, he might show again in the area where he has shown most of times. Then the police can send policemen to this area to wait to catch this criminal until he shows again. Figure 1 shows how to detect a human face with openCV.
-We know that in computer vision technology, it is not very hard to recognize a person from the video stream or the pictures, however, this might take 1 second each picture for normal computer. To catch the criminal, we need to position the criminal as far as possible, if the police do not own a super computer, it would take several days to get the location. However, with map reduce, they can distribute the jobs to several computer to search the criminal at the same time, this would save a lot of time!
+Our project try to help the police to build a “Criminal Locating System”. Imagine the police want to find the track of a criminal.
+The first step would be find a comparatively clear photo of the face of the criminal, and then using the video streams or pictures from the transportation cameras in city to generate the frequency of the criminal visiting different places. The high ranking places could be where the criminal lives or his operating spot. Then the police can send force to this area to catch this criminal until he shows again. Figure 1 shows how to detect a human face with openCV.
+We know that in computer vision technology, it is not very hard to recognize a person from the video stream or the pictures. However, this might take 1 second each picture for normal computer. If the police want to complete the mission in a timely manner, they can make there computers as fast as possible. However, increase the quality of a computer is much more expensive than finding lots of low-end computers and make them solve the problem together. MapReduce model is the tool to implement this idea.
 
 \begin{figure}[h!]
   
@@ -33,9 +33,8 @@ We know that in computer vision technology, it is not very hard to recognize a p
 
 \section {Basic Concepts}
 
-In our project, we do not use the real face an pictures to realize our map-reduce function, instead, we focus on how to implement the map and reduce function in our whole system.
-
-We use C++ and OpenCV to create a lot of pictures which contains several shapes in the same picture. We have circle, triangle, rectangle to represent the real pictures from the cameras. 
+In our project, we do not use the real pictures to realize our map-reduce function as we focus more on building the distributed system. Instead,
+we use C++ and OpenCV to create a lot of pictures which contains several shapes in the same picture. We add lots of different shapes randomly in our pictures and use circle as our target. Then we add noise to the pictures to mimic the actual situation.
 
 \begin{figure}[h!]
   
@@ -44,7 +43,9 @@ We use C++ and OpenCV to create a lot of pictures which contains several shapes 
     \caption{Sample image of our test images.}
 \end{figure}
 
-Figure 2 shows what our images like. Suppose one of them demonstrates “criminal” and the others demonstrates “normal people”. If the circle represents our “criminal”, then our job is to find the circles from all the pictures and return the location and times of where the circle shows. In our model, master is in charge of assigning jobs to a set of workers so that workers can know when they do “Map” and when they do “Reduce”. “Map” workers are in charge of using OpenCV to find where the circle is in the pictures, “Reduce” workers are in charge of requesting the result from “Map” workers and adding them together. The file system is in charge of storing all the pictures and the result calculated from “Reduce” workers and it has the communication with the “Reduce” workers and “Master”. We will discuss their jobs in detail below.
+Figure 2 shows what are our images like. Suppose the circle represents “criminal” and the others demonstrates “normal people”. If the circle represents our “criminal”, then our job is to find the circles from all the pictures and return the location and times of where the circle appears. 
+
+In MapReduce model, master is in charge of assigning jobs to a set of workers so that workers can know when they do “Map” and when they do “Reduce”. “Map” workers are in charge of using MapFunction to generate where intermediate result.  “Reduce” workers are in charge of requesting the result from “Map” workers and use reduce function to attach them together. The file system is in charge of storing all the input and the result calculated from “Reduce” workers.
 
 
 \begin{figure}[h!]
@@ -62,22 +63,24 @@ Map function and Reduce function are separated from Worker such that any Map fun
 follows the interface can be integrated into our system.
 Master and Worker are designed to manage the whole structure. In other words, they manage the communication that
 is essential no matter what specific Map and Reduce function is running on the infrastructure.
-File system...
+For file system, we simply create a process that the reduce workers and master can talk to. It stores the input and output.
 Following this design, we separate our application and infrastructure so that our design is flexible enough
 for any job that fits into MapReduce model. 
 \subsection{Locating Algorithm }
 
-In real situation, the images to processing would come from hundreds of cameras located in different places. And these images came from video for hours or days. So the number of images might be extremely huge, and they were stored in different places. Furthermore, the size of one image could be also very large, cause to accurately detect if this camera catch the criminal, a clearer image might be needed. Besides these, implying face recognition in just one picture to match a face with a picture of the criminal we have would also consuming a large amount of time. While to catch or monitor the criminal, the time to locate the criminal need to be as short as possible. All the reason above, which showing that using only one computer would consuming huge bandwidth, time, and other resources, push us to implementing MapReduce model in the criminal locating system, which could separate the job into several pieces and using several computers to finish this job together. 
+In real situation, the images to processing would come from hundreds of cameras located in different places. And these images came from video for hours or days. So the number of images might be extremely huge, and they were stored in different places. Furthermore, the size of one image could be also very large as to accurately detect if this camera catch the criminal, a clearer image might be needed. Besides these, implying face recognition in just one picture to match a face with a picture of the criminal we have would also consuming a large amount of time. While to catch or monitor the criminal, the time to locate the criminal need to be as short as possible. All the reason above, which showing that using only one computer would consuming huge bandwidth, time, and other resources, push us to implementing MapReduce model in the criminal locating system, which could separate the job into several pieces and using several computers to finish this job together. 
 
 One part of the criminal locating system is facial detection. Some facial recognition algorithms identify facial features by extracting landmarks, or features, from an image of the subject's face. For example, an algorithm may analyze the relative position, size, and/or shape of the eyes, nose, cheekbones, and jaw. These features are then used to search for other images with matching features. Other algorithms normalize a gallery of face images and then compress the face data, only saving the data in the image that is useful for face recognition. A probe image is then compared with the face data. One of the earliest successful systems is based on template matching techniques applied to a set of salient facial features, providing a sort of compressed face representation.
 
-But in this project, image processing is not the key point. Instead we create images by ourselves, which have several simple shapes, among them we take the shape circle, as the face of criminal, and implementing circle detection instead of face recognition. And without accurate facial recognition, the number of catched circles may have some error.
+But in this project, image processing is not the key point. Instead we create images by ourselves, which have several simple shapes, among them we take the shape circle, as the face of criminal, and implementing circle detection instead of face recognition. And without accurate facial recognition, the number of caught circles may have some error.
 
 In workers for map, after processing \lq\lq face recognition\rq\rq, it would building a map with location names and the frequency of appearance of criminal in that location. Then high frequency presents high probability to find the criminal, and we could start the catching action. 
 \subsection{File System}
+
 \subsection{Master}
 
-Master manages the whole MapReduce system. It has 4 main functions: \\
+Master manages the whole MapReduce system. It has 4 main functions: 
+
 First, master keeps record on who and where the workers are in a table. It holds the IP address and 
 port number of each worker who participates in completing the job. The workers send \lq\lq JOIN\rq\rq\  
 message to the master then master will assign a unique worker ID for the newly join worker.
@@ -115,7 +118,7 @@ Therefore, when master assigns jobs, each job has a job ID. The reduce worker wi
     
 \subsection{Fault Tolerance}
 
-Most principle in designing distributed system is actually helping people to fight node fault. In our design, we combine three most common techniques used in the distributed systems to tolerate faults.
+Most principle in designing distributed system is actually helping people to fight against node fault. In our design, we combine three most common techniques used in the distributed systems to tolerate faults.
 
 First, replication. Several copies of the input data are stored on different node such that if one goes down, the substitute will always have access to required input. Actually, the distributed file system itself can be a very complex component instead of our simple stimulation. The file system is a key part of the Hadoop platform.   
 
@@ -149,10 +152,13 @@ These two principles will determine how to avoid unnecessary locks. For example,
 
 \section{Experiment and Performance }
 
-We create a program to generate random pictures as input. The program takes an integer a as input and generate a pictures with format number.placename.png.  Each pictures contains random shapes generate and their sizes are different. Then we make several copies of these pictures and store them in the nodes. We run our MapReduce application and get the output which contains location and spot frequency pairs to indicate how many times the specified shape appears in the location. The application successfully generates the output in a timely manner. Then we try to crash several workers and find that the application will still obtain the expected result but with delay. The time for the master to detect fault and reassign jobs attributes to this delay.
+We create a program to generate random pictures as input. The program takes an integer a as input and generate a pictures with format number.placename.png.  Each pictures contains random shapes and their sizes are different. Then we make several copies of these pictures and store them in the nodes. We run our MapReduce application and get the output which contains location and spot frequency pairs to indicate how many times the specified shape appears in the location. The application successfully generates the output in a timely manner. Then we try to crash several workers and find that the application will still obtain the expected result but with delay. The time for the master to detect fault and reassign jobs attributes to this delay. The following figure shows the comparison between the execution time between using map-reduce model and simply using one computer to get the result. We only have 3 member in our group so we can afford to one reduce worker and two map workers. Of course we can make several processes in one computer. But that won't change execution time as each node in our application is supposed to run in full power. From the result, we find when the input size is small,  using a MapReduce is slower because of all the messages sent and data structure created to keep the MapReduce structure. Then when input size increases, the benefit becomes obvious. 
+
+Two factors need to be considered in our result. One is our computers are all in Duke sub-net. The delay of transmitting data via Internet is fairly small compared to the normal cases. The other factor is the size of image. Our images are generated by our openCV program and the size is relatively small. If the size of image is huge, we may need to divide the image into pieces that can fit in the memory of our nodes(Google implementation use their file system to do that. We didn't implement this function of MapReduce as time limits). Then the improvement of MapReduce procedure could be much more as each node will not have to fetch data from disks during the image processing program.       
   
 \section {Conclusion}
 
+The main structure of MapReduce is implemented and the application function meets our proposal to locate shapes distributively. The execution test result fits the theory. Implementing the replication and heart-beat using different mechanism sheds lights on how distributed systems handle fault tolerance. Further extension of this project can focus on Master fault tolerance as we described above or implement a fully functional file system. 
 \section*{Reference}
 
 [1] Jeffrey Dean, Sanjay Ghemawat, MapReduce: Simplified Data Processing on Large Clusters, 2004 \\
