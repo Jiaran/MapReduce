@@ -77,6 +77,16 @@ But in this project, image processing is not the key point. Instead we create im
 In workers for map, after processing \lq\lq face recognition\rq\rq, it would building a map with location names and the frequency of appearance of criminal in that location. Then high frequency presents high probability to find the criminal, and we could start the catching action. 
 \subsection{File System}
 
+
+Mapreduce is widely used to deal with huge file or data, so it is common that one single computer cannot store all the data. Therefore, distributed file system is needed to implement the Mapreduce function. In commercial, there are Google File System and Hadoop Distributed File System. In our project, we do not have that huge data, so there is no need to actually build a distributed file system. We mainly focus on implementing the ”Map” and ”Reduce” function. We assume that we have a distributed file system and our images are stored in the file system. To make it easy to implement, we make a copy of the images in each nodes.
+
+File system knows where all the images are stored in the file system, it has a hashmap A to store the imageID and imageName. All nodes should ask filesystem to know where are the images that they are allocated to deal with. For example, if the node asks the filesystem where is imageID(12), the file system will tell it the imageName of imageID(12), thus the node can read the imagesID(12) to do the job.
+
+We assume that our file system will never off line, it has the interface to talk with reduce workers and master. The file system is always listening, if it receives a ”ADD” signal from reduce workers, it will store the location and times information in its own hashmap B, if the location is already in the hashmap, the file system will add the new appearance times into the existing times. To avoid conflicts, before each adding procedure, it will lock the system. After finishing the adding, it will unlock the procedure.
+
+If the file system receives a ”ALL” signal from a node, it will give all the stored information in the hashmap B now, including the location and the appearance times. 
+
+
 \subsection{Master}
 
 Master manages the whole MapReduce system. It has 4 main functions: 
@@ -152,10 +162,27 @@ These two principles will determine how to avoid unnecessary locks. For example,
 
 \section{Experiment and Performance }
 
-We create a program to generate random pictures as input. The program takes an integer a as input and generate a pictures with format number.placename.png.  Each pictures contains random shapes and their sizes are different. Then we make several copies of these pictures and store them in the nodes. We run our MapReduce application and get the output which contains location and spot frequency pairs to indicate how many times the specified shape appears in the location. The application successfully generates the output in a timely manner. Then we try to crash several workers and find that the application will still obtain the expected result but with delay. The time for the master to detect fault and reassign jobs attributes to this delay. The following figure shows the comparison between the execution time between using map-reduce model and simply using one computer to get the result. We only have 3 member in our group so we can afford to one reduce worker and two map workers. Of course we can make several processes in one computer. But that won't change execution time as each node in our application is supposed to run in full power. From the result, we find when the input size is small,  using a MapReduce is slower because of all the messages sent and data structure created to keep the MapReduce structure. Then when input size increases, the benefit becomes obvious. 
+We create a program to generate random pictures as input. The program takes an integer a as input and generate a pictures with format \lq\lq number.placename.png\rq\rq.  Each pictures contains random shapes and their sizes are different. Then we make several copies of these pictures and store them in the nodes. We run our MapReduce application and get the output which contains location and spot frequency pairs to indicate how many times the specified shape appears in the location. The application successfully generates the output in a timely manner. Then we try to crash several workers and find that the application will still obtain the expected result but with delay. The time for the master to detect fault and reassign jobs attributes to this delay. The following figure shows the comparison between the execution time between using map-reduce model and simply using one computer to get the result. We only have 3 member in our group so we can afford to one reduce worker and two map workers. Of course we can make several processes in one computer. But that won't change execution time as each node in our application is supposed to run in full power. From the result, we find when the input size is small,  using a MapReduce is slower because of all the messages sent and data structure created to keep the MapReduce structure. Then when input size increases, the benefit becomes obvious. 
 
 Two factors need to be considered in our result. One is our computers are all in Duke sub-net. The delay of transmitting data via Internet is fairly small compared to the normal cases. The other factor is the size of image. Our images are generated by our openCV program and the size is relatively small. If the size of image is huge, we may need to divide the image into pieces that can fit in the memory of our nodes(Google implementation use their file system to do that. We didn't implement this function of MapReduce as time limits). Then the improvement of MapReduce procedure could be much more as each node will not have to fetch data from disks during the image processing program.       
   
+
+\begin{figure}[h!]
+  
+  \centering
+    \includegraphics[width=0.7\textwidth]{large.png}
+    \caption{Excecution time comparison(full performance).}
+\end{figure}
+
+\begin{figure}[h!]
+  
+  \centering
+    \includegraphics[width=0.7\textwidth]{small.png}
+    \caption{Excecution time comparison(small range).}
+\end{figure}
+
+
+
 \section {Conclusion}
 
 The main structure of MapReduce is implemented and the application function meets our proposal to locate shapes distributively. The execution test result fits the theory. Implementing the replication and heart-beat using different mechanism sheds lights on how distributed systems handle fault tolerance. Further extension of this project can focus on Master fault tolerance as we described above or implement a fully functional file system. 
@@ -163,7 +190,7 @@ The main structure of MapReduce is implemented and the application function meet
 
 [1] Jeffrey Dean, Sanjay Ghemawat, MapReduce: Simplified Data Processing on Large Clusters, 2004 \\
 {[2]} Xuehan Xiong, Fernando De la Torre, Supervised Descent Method and its Applications to Face Alignment, 2013\\
-{[3]} Wikipedia contributors. "MapReduce." Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia, 10 Apr. 2014. Web. 14 Apr. 2014. \\
-{[4]} Wikipedia contributors. "Google file system." Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia, 1 Dec. 2007. Web. 15 Apr. 2014. \\
-{[5]} Wikipedia contributors. "Face recognition." Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia, 26 Apr. 2013. Web. 15 Apr. 2014.
+{[3]} Wikipedia contributors. \lq\lq MapReduce.\rq\rq Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia, 10 Apr. 2014. Web. 14 Apr. 2014. \\
+{[4]} Wikipedia contributors. \lq\lq Google file system.\rq\rq Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia, 1 Dec. 2007. Web. 15 Apr. 2014. \\
+{[5]} Wikipedia contributors. \lq\lq Face recognition.\rq\rq Wikipedia, The Free Encyclopedia. Wikipedia, The Free Encyclopedia, 26 Apr. 2013. Web. 15 Apr. 2014.
 \end{document}

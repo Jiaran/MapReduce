@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.13)  14 APR 2014 22:15
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.4.13)  14 APR 2014 23:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -153,7 +153,7 @@ Package pdftex.def Info: 2.png used on input line 28.
 <1.jpg, id=13, 401.5pt x 401.5pt>
 File: 1.jpg Graphic file (type jpg)
  <use 1.jpg>
-Package pdftex.def Info: 1.jpg used on input line 43.
+Package pdftex.def Info: 1.jpg used on input line 42.
 (pdftex.def)             Requested size: 195.0pt x 195.00294pt.
 
 
@@ -213,52 +213,80 @@ Missing character: There is no ú in font cmr12!
 Missing character: There is no ‚ in font cmr12!
 Missing character: There is no Ä in font cmr12!
 Missing character: There is no ù in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ú in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ù in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ú in font cmr12!
-Missing character: There is no ‚ in font cmr12!
-Missing character: There is no Ä in font cmr12!
-Missing character: There is no ù in font cmr12!
-[2 <./2.png>] <3.png, id=18, 482.7636pt x 422.41815pt>
+<3.png, id=14, 482.7636pt x 422.41815pt>
 File: 3.png Graphic file (type png)
  <use 3.png>
-Package pdftex.def Info: 3.png used on input line 53.
+Package pdftex.def Info: 3.png used on input line 54.
 (pdftex.def)             Requested size: 390.0pt x 341.25444pt.
+ [2 <./2.png>]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[3 <./1.jpg>] [4 <./3.png>]
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+ [5]
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+Missing character: There is no ‚ in font cmr12!
+Missing character: There is no Ä in font cmr12!
+Missing character: There is no ù in font cmr12!
+ [6] [7] [8] [9]
+<large.png, id=42, 562.1pt x 421.575pt>
+File: large.png Graphic file (type png)
+ <use large.png>
+Package pdftex.def Info: large.png used on input line 173.
+(pdftex.def)             Requested size: 272.99881pt x 204.74666pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[3 <./1.jpg>] [4 <./3.png>] [5] [6] [7] [8]
-Overfull \hbox (45.2677pt too wide) in paragraph at lines 152--153
-\OT1/cmr/m/n/12 takes an in-te-ger a as in-put and gen-er-ate a pic-tures with 
-for-mat num-ber.placename.png.
- []
+<small.png, id=43, 562.1pt x 421.575pt>
+File: small.png Graphic file (type png)
+ <use small.png>
+Package pdftex.def Info: small.png used on input line 180.
+(pdftex.def)             Requested size: 272.99881pt x 204.74666pt.
 
-[9] [10] (./myL.aux) ) 
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[10] [11 <./large.png (PNG copy)> <./small.png (PNG copy)>] [12] (./myL.aux) ) 
 Here is how much of TeX's memory you used:
- 1491 strings out of 494536
- 21631 string characters out of 6167446
- 77180 words of memory out of 5000000
- 4752 multiletter control sequences out of 15000+600000
+ 1499 strings out of 494536
+ 21749 string characters out of 6167446
+ 78180 words of memory out of 5000000
+ 4760 multiletter control sequences out of 15000+600000
  6671 words of font info for 24 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 37i,6n,23p,1000b,220s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2013basic/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2013basic/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2013basic/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2013basic/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2013basic/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on myL.pdf (10 pages, 1252924 bytes).
+ 37i,6n,23p,1412b,220s stack positions out of 5000i,500n,10000p,200000b,80000s
+<
+/usr/local/texlive/2013basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.p
+fb></usr/local/texlive/2013basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx
+12.pfb></usr/local/texlive/2013basic/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr10.pfb></usr/local/texlive/2013basic/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr12.pfb></usr/local/texlive/2013basic/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr17.pfb>
+Output written on myL.pdf (12 pages, 1266321 bytes).
 PDF statistics:
- 63 PDF objects out of 1000 (max. 8388607)
- 40 compressed objects within 1 object stream
+ 71 PDF objects out of 1000 (max. 8388607)
+ 44 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 
